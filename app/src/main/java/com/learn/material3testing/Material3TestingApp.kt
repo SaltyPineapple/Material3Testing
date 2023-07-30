@@ -7,12 +7,16 @@ import androidx.compose.runtime.ComposableTargetMarker
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.learn.material3testing.ui.components.HomeScreen
-import com.learn.material3testing.ui.components.MaterialScaffold
 import com.learn.material3testing.ui.components.NavBarItems
+import com.learn.material3testing.ui.components.ProfileScreen
+import com.learn.material3testing.ui.components.SearchScreen
 import com.learn.material3testing.ui.theme.Material3TestingTheme
 
 @Composable
@@ -22,7 +26,7 @@ fun Material3TestingApp() {
     Material3TestingTheme {
         Scaffold(
             bottomBar = {
-                NavigationBar(containerColor = MaterialTheme.colorScheme.secondaryContainer){
+                NavigationBar(containerColor = MaterialTheme.colorScheme.primaryContainer){
                     NavBarItems.forEach { item ->
                         var selected = item.route == backStackEntry.value?.destination?.route
                         NavigationBarItem(
@@ -38,22 +42,43 @@ fun Material3TestingApp() {
                                 Icon(imageVector = item.icon, contentDescription = "${item.text} Icon")
                             },
                             colors = NavigationBarItemDefaults.colors(
-                                selectedIconColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                                unselectedIconColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                                selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                                unselectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
                                 selectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
                                 unselectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                                indicatorColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                indicatorColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                
                             )
                         )
                     }
                 }
             },
 
-        ) {
-
+        ) { padding ->
+            NavGraph(modifier = Modifier.padding(padding), navController = navController)
         }
     }
 }
+
+@Composable
+private fun NavGraph(
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
+    startDestination: String = HomeScreen.route,
+){
+    NavHost(navController = navController, startDestination = startDestination){
+        composable(route = HomeScreen.route){
+            HomeScreen.screen
+        }
+        composable(route = SearchScreen.route){
+            SearchScreen.screen
+        }
+        composable(route = ProfileScreen.route){
+            ProfileScreen.screen
+        }
+    }
+}
+
 
 @Preview
 @Composable
