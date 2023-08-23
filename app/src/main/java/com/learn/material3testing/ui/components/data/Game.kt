@@ -1,12 +1,13 @@
 package com.learn.material3testing.ui.components.data
 
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.learn.material3testing.R
 
 interface Game {
     val id: Int
     val name: String
     val players: Int
-    val imageIcon: ImageVector
+    val imageIconUrl: Int
 }
 
 // FAKE DATA BELOW
@@ -22,8 +23,8 @@ object FakeGame1 : Game {
         get() = "Game1"
     override val players: Int
         get() = 4
-    override val imageIcon: ImageVector
-        get() = TODO("Not yet implemented")
+    override val imageIconUrl: Int
+        get() = R.drawable.placeholder
 }
 
 object FakeGame2 : Game {
@@ -33,8 +34,8 @@ object FakeGame2 : Game {
         get() = "Game2"
     override val players: Int
         get() = 4
-    override val imageIcon: ImageVector
-        get() = TODO("Not yet implemented")
+    override val imageIconUrl: Int
+        get() =  R.drawable.placeholder
 }
 
 object FakeGame3 : Game {
@@ -44,6 +45,6 @@ object FakeGame3 : Game {
         get() = "Game3"
     override val players: Int
         get() = 4
-    override val imageIcon: ImageVector
-        get() = TODO("Not yet implemented")
+    override val imageIconUrl: Int
+        get() =  R.drawable.placeholder
 }

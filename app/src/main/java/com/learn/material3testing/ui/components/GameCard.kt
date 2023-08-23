@@ -1,6 +1,7 @@
 package com.learn.material3testing.ui.components
 
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,9 +22,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.learn.material3testing.R
 import com.learn.material3testing.ui.components.data.Game
 import com.learn.material3testing.ui.components.data.GameGrabber
 import com.learn.material3testing.ui.components.data.games
@@ -32,7 +37,7 @@ import com.learn.material3testing.ui.theme.Material3TestingTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameCard(gameId: Int){
-    val currentGame = GameGrabber().GetGame(gameId)
+    val currentGame = GameGrabber().getGame(gameId)
     val context = LocalContext.current
     Card(
         onClick = { Toast.makeText(context, currentGame.name, Toast.LENGTH_SHORT).show() },
@@ -45,14 +50,14 @@ fun GameCard(gameId: Int){
             Column(modifier = Modifier
                 .padding(16.dp)
                 .weight(1f)) {
-                Text(text = currentGame.name)
+                Text(text = currentGame.name, fontWeight = FontWeight.Bold)
                 Text(text = "Players: " + currentGame.players.toString())
             }
-            Box(
-                modifier = Modifier
-                    .width(80.dp)
-                    .fillMaxHeight()
-                    .background(color = MaterialTheme.colorScheme.onPrimaryContainer)
+            Image(
+                painter = painterResource(id = R.drawable.placeholder),
+                contentDescription = "Placeholder",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.width(80.dp),
             )
         }
     }
