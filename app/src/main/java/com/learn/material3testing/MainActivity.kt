@@ -16,30 +16,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Material3TestingApp()
-//            Material3TestingTheme {
-//                // A surface container using the 'background' color from the theme
-//                Surface(
-//                    modifier = Modifier.fillMaxSize(),
-//                    color = MaterialTheme.colorScheme.primary
-//                ) {
-//
-//                    Greeting("Android")
-//                }
-//            }
+            Material3TestingTheme {
+                Material3TestingApp()
+            }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    Material3TestingTheme {
-        Greeting("Android")
     }
 }

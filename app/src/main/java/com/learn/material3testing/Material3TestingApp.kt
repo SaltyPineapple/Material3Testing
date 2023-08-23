@@ -3,11 +3,9 @@ package com.learn.material3testing
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ComposableTargetMarker
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,71 +15,82 @@ import com.learn.material3testing.ui.components.HomeScreen
 import com.learn.material3testing.ui.components.NavBarItems
 import com.learn.material3testing.ui.components.ProfileScreen
 import com.learn.material3testing.ui.components.SearchScreen
+import com.learn.material3testing.ui.screens.Home
+import com.learn.material3testing.ui.screens.Profile
+import com.learn.material3testing.ui.screens.Search
 import com.learn.material3testing.ui.theme.Material3TestingTheme
 
 @Composable
 fun Material3TestingApp() {
     val navController = rememberNavController()
     val backStackEntry = navController.currentBackStackEntryAsState()
-    Material3TestingTheme {
-        Scaffold(
-            bottomBar = {
-                NavigationBar(containerColor = MaterialTheme.colorScheme.primaryContainer){
-                    NavBarItems.forEach { item ->
-                        var selected = item.route == backStackEntry.value?.destination?.route
-                        NavigationBarItem(
-                            selected = selected,
-                            onClick = { navController.navigate(item.route) },
-                            label = {
-                                Text(
-                                    text = item.text,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                            },
-                            icon = {
-                                Icon(imageVector = item.icon, contentDescription = "${item.text} Icon")
-                            },
-                            colors = NavigationBarItemDefaults.colors(
-                                selectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                                unselectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                selectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                                unselectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                                indicatorColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                
+    Scaffold(
+        bottomBar = {
+            NavigationBar(containerColor = MaterialTheme.colorScheme.primaryContainer){
+                NavBarItems.forEach { item ->
+                    var selected = item.route == backStackEntry.value?.destination?.route
+                    NavigationBarItem(
+                        selected = selected,
+                        onClick = { navController.navigate(item.route) },
+                        label = {
+                            Text(
+                                text = item.text,
+                                fontWeight = FontWeight.SemiBold
                             )
-                        )
-                    }
-                }
-            },
+                        },
+                        icon = {
+                            Icon(imageVector = item.icon, contentDescription = "${item.text} Icon")
+                        },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                            unselectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            selectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                            unselectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                            indicatorColor = MaterialTheme.colorScheme.onPrimaryContainer,
 
-        ) { padding ->
-            NavGraph(modifier = Modifier.padding(padding), navController = navController)
-        }
+                        )
+                    )
+                }
+            }
+        },
+
+    ) { padding ->
+        NavGraph(modifier = Modifier.padding(padding), navController = navController)
     }
 }
 
 @Composable
 private fun NavGraph(
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(),
+    navController: NavHostController,
     startDestination: String = HomeScreen.route,
 ){
     NavHost(navController = navController, startDestination = startDestination){
         composable(route = HomeScreen.route){
-            HomeScreen.screen
+            Home()
         }
         composable(route = SearchScreen.route){
-            SearchScreen.screen
+            Search()
         }
         composable(route = ProfileScreen.route){
-            ProfileScreen.screen
+            Profile()
         }
     }
 }
 
 
-@Preview
+@Preview("Lightmode", backgroundColor = 0xFFF1EFEF)
 @Composable
-fun Material3TestingAppPreview(){
-    Material3TestingApp()
+fun Material3TestingAppPreviewLight(){
+    Material3TestingTheme(darkTheme = false) {
+        Material3TestingApp()
+    }
+}
+
+@Preview("Darkmode", backgroundColor = 0xFF3F3E3E)
+@Composable
+fun Material3TestingAppPreviewDark(){
+    Material3TestingTheme(darkTheme = true) {
+        Material3TestingApp()
+    }
 }
