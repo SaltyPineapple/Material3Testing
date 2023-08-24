@@ -12,12 +12,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.learn.material3testing.ui.components.HomeScreen
+import com.learn.material3testing.ui.components.MaterialScaffold
 import com.learn.material3testing.ui.components.NavBarItems
 import com.learn.material3testing.ui.components.ProfileScreen
 import com.learn.material3testing.ui.components.SearchScreen
@@ -31,8 +34,7 @@ fun Material3TestingApp() {
     val navController = rememberNavController()
     val backStackEntry = navController.currentBackStackEntryAsState()
 
-    // NOTE: I think we need to move this scaffold to its own composable bc the FAB will be on every screen. Need to make it modular
-    Scaffold(
+    MaterialScaffold(
         bottomBar = {
             NavigationBar(containerColor = MaterialTheme.colorScheme.primaryContainer){
                 NavBarItems.forEach { item ->
@@ -56,28 +58,11 @@ fun Material3TestingApp() {
                             unselectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
                             indicatorColor = MaterialTheme.colorScheme.onPrimaryContainer,
 
-                        )
+                            )
                     )
                 }
             }
         },
-        floatingActionButton = {
-            val context = LocalContext.current
-            FloatingActionButton(
-                onClick = { Toast.makeText(context, "Create a new game", Toast.LENGTH_SHORT).show() },
-                modifier = Modifier.padding(16.dp),
-                containerColor = MaterialTheme.colorScheme.tertiary,
-                contentColor = MaterialTheme.colorScheme.onTertiary,
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Start a new game",
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-        },
-        floatingActionButtonPosition = FabPosition.End,
-
     ) { padding ->
         NavGraph(modifier = Modifier.padding(padding), navController = navController)
     }
@@ -101,7 +86,6 @@ private fun NavGraph(
         }
     }
 }
-
 
 @Preview("Lightmode", backgroundColor = 0xFFF1EFEF)
 @Composable

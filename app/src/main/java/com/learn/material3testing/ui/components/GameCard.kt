@@ -46,12 +46,17 @@ fun GameCard(gameId: Int){
             defaultElevation = 10.dp
         ),
     ) {
-        Row(modifier = Modifier.background(color = MaterialTheme.colorScheme.primaryContainer)) {
+        Row(modifier = Modifier.background(color = MaterialTheme.colorScheme.primary)) {
             Column(modifier = Modifier
                 .padding(16.dp)
                 .weight(1f)) {
-                Text(text = currentGame.name, fontWeight = FontWeight.Bold)
-                Text(text = "Players: " + currentGame.players.toString())
+                Text(
+                    text = currentGame.name,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onPrimary)
+                Text(
+                    text = "Players: " + currentGame.players.toString(),
+                    color = MaterialTheme.colorScheme.onPrimary)
             }
             Image(
                 painter = painterResource(id = R.drawable.placeholder),
@@ -64,11 +69,12 @@ fun GameCard(gameId: Int){
 }
 
 @Composable
-fun GameCards(gameCollection: List<Game>){
+fun GameCards(gameCollection: List<Game>, modifier: Modifier = Modifier){
     LazyVerticalGrid(
         columns = GridCells.Fixed(1),
         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 1.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = Modifier.padding(bottom = 80.dp, top = 4.dp)
     ){
         items(gameCollection.size) { index -> GameCard(gameCollection[index].id)}
     }
