@@ -17,7 +17,9 @@ import androidx.compose.ui.unit.dp
 import com.learn.material3testing.ui.components.GameCards
 import com.learn.material3testing.ui.components.MaterialNavBar
 import com.learn.material3testing.ui.components.MaterialScaffold
+import com.learn.material3testing.ui.components.data.accounts.SignUpViewModel
 import com.learn.material3testing.ui.components.data.games
+import com.learn.material3testing.ui.components.profile.SignInForm
 
 @Composable
 fun Home(){
@@ -47,17 +49,14 @@ fun Home(){
 
 @Composable
 fun Search(){
-    MaterialScaffold(
-
-        ) { paddingValues ->
+    MaterialScaffold() { paddingValues ->
         Text(text = "Hello Search!", modifier = Modifier.padding(paddingValues))
     }
 }
 
 @Composable
 fun Profile(){
-    MaterialScaffold(
-        ) { paddingValues ->
-        Text(text = "Hello Profile!", modifier = Modifier.padding(paddingValues))
+    MaterialScaffold { paddingValues ->
+        SignInForm(modifier = Modifier.padding(paddingValues))
     }
 }
