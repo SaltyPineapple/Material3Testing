@@ -74,7 +74,7 @@ fun GameCards(gameCollection: List<Game>, modifier: Modifier = Modifier){
         columns = GridCells.Fixed(1),
         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 1.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier.padding(bottom = 84.dp, top = 4.dp)
+        modifier = Modifier.padding(bottom = 80.dp, top = 4.dp)
     ){
         items(gameCollection.size) { index -> GameCard(gameCollection[index].id)}
     }
