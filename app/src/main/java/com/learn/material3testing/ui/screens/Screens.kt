@@ -58,6 +58,6 @@ fun Search(){
 fun Profile(){
     MaterialScaffold(
         ) { paddingValues ->
-        Text(text = "Hello Profile!", modifier = Modifier.padding(paddingValues))
+        SignInForm(modifier = Modifier.padding(paddingValues))
     }
 }

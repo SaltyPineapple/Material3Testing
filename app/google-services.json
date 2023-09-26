@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "595229474031",
+    "project_id": "scorebook-9cd55",
+    "storage_bucket": "scorebook-9cd55.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:595229474031:android:f3e0d7cd8082673371ef1a",
+        "android_client_info": {
+          "package_name": "com.learn.material3testing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "595229474031-kip73b7q0v4l7ons035sokas19fpl747.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.learn.material3testing",
+            "certificate_hash": "5c7357732852062fc976996301b38970f41421ac"
+          }
+        },
+        {
+          "client_id": "595229474031-oei82iccu8gd8khntvfcrf1lk7pl0r5p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpB1B-2Opx2faYr4O1FLd0osP4ZUfDN5Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "595229474031-4q4f2l4df74olu5ldm2grn93vi50s2mv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
