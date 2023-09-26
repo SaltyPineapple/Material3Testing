@@ -1,6 +1,7 @@
 package com.learn.material3testing.ui.screens
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -14,10 +15,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.learn.material3testing.R
 import com.learn.material3testing.ui.components.GameCards
 import com.learn.material3testing.ui.components.MaterialNavBar
 import com.learn.material3testing.ui.components.MaterialScaffold
+import com.learn.material3testing.ui.components.business.GameService
+import com.learn.material3testing.ui.components.data.Game
 import com.learn.material3testing.ui.components.data.games
+import com.learn.material3testing.ui.components.data.services.StorageService
 
 @Composable
 fun Home(){
@@ -25,7 +32,9 @@ fun Home(){
         floatingActionButton = {
             val context = LocalContext.current
             FloatingActionButton(
-                onClick = { Toast.makeText(context, "Create a new game", Toast.LENGTH_SHORT).show() },
+                onClick = {
+                    GameService().createGame(game = Game(imageIconUrl = R.drawable.placeholder, name = "New Game", players = 5, userId = Firebase.auth.currentUser?.uid))
+                    Toast.makeText(context, "Create a new game", Toast.LENGTH_SHORT).show() },
                 modifier = Modifier.padding(end = 16.dp, bottom = 72.dp),
                 containerColor = MaterialTheme.colorScheme.tertiary,
                 contentColor = MaterialTheme.colorScheme.onTertiary,
@@ -48,7 +57,6 @@ fun Home(){
 @Composable
 fun Search(){
     MaterialScaffold(
-
         ) { paddingValues ->
         Text(text = "Hello Search!", modifier = Modifier.padding(paddingValues))
     }

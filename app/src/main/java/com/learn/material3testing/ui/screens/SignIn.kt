@@ -20,6 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.learn.material3testing.SignInActivity
 import com.learn.material3testing.ui.theme.Material3TestingTheme
 import kotlinx.coroutines.launch
@@ -29,19 +31,37 @@ fun SignInForm(
     modifier: Modifier = Modifier
 ){
     val context = LocalContext.current
-    Button(
-        onClick = {
-            val intent = Intent(context, SignInActivity::class.java)
-            context.startActivity(intent)
-        },
-        elevation =  ButtonDefaults.buttonElevation(
-            defaultElevation = 10.dp,
-            pressedElevation = 15.dp,
-            disabledElevation = 0.dp
-        ),
-        modifier = Modifier.padding(16.dp)
-    ) {
-        Text("Sign in with Google")
+    val user = Firebase.auth.currentUser
+    if(user != null){
+        user.let {
+            val name = it.displayName
+            val email = it.email
+            val uid = it.uid
+            Column {
+                Text(text = "Hello, $name", modifier = modifier)
+                Text(text = "Email: $email", modifier = modifier)
+                Text(text = "uid: $uid", modifier = modifier)
+                /** TODO
+                 * Add sign out button
+                 */
+            }
+        }
+    }
+    else {
+        Button(
+            onClick = {
+                val intent = Intent(context, SignInActivity::class.java)
+                context.startActivity(intent)
+            },
+            elevation =  ButtonDefaults.buttonElevation(
+                defaultElevation = 10.dp,
+                pressedElevation = 15.dp,
+                disabledElevation = 0.dp
+            ),
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text("Sign in with Google")
+        }
     }
 }
 

@@ -51,7 +51,7 @@ fun GameCard(gameId: Int){
                 .padding(16.dp)
                 .weight(1f)) {
                 Text(
-                    text = currentGame.name,
+                    text = currentGame.name.toString(),
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onPrimary)
                 Text(
@@ -76,7 +76,7 @@ fun GameCards(gameCollection: List<Game>, modifier: Modifier = Modifier){
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.padding(bottom = 80.dp, top = 4.dp)
     ){
-        items(gameCollection.size) { index -> GameCard(gameCollection[index].id)}
+        items(gameCollection.size) { index -> gameCollection[index].id?.let { GameCard(it) } }
     }
 }
 
