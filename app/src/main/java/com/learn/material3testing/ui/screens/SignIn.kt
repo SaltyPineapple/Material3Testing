@@ -41,9 +41,9 @@ fun SignInForm(
                 Text(text = "Hello, $name", modifier = modifier)
                 Text(text = "Email: $email", modifier = modifier)
                 Text(text = "uid: $uid", modifier = modifier)
-                /** TODO
-                 * Add sign out button
-                 */
+                Button(onClick = { Firebase.auth.signOut() }) {
+                    Text(text = "Sign out of Google")
+                }
             }
         }
     }
