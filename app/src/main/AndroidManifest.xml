@@ -12,11 +12,6 @@
         android:theme="@style/Theme.Material3Testing"
         tools:targetApi="31" >
         <activity
-            android:name=".GameCreationActivity"
-            android:exported="false"
-            android:label="@string/title_activity_game_creation"
-            android:theme="@style/Theme.Material3Testing" />
-        <activity
             android:name=".SignInActivity"
             android:exported="false"
             android:label="@string/title_activity_sign_in"

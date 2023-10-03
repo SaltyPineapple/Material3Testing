@@ -17,15 +17,15 @@ import kotlinx.coroutines.tasks.await
 class StorageService : IStorageService  {
 
     override val games: Flow<List<Game>>
-        get() = FirebaseFirestore.getInstance().collection(GAME_COLLECTION)
+        get() = FirebaseFirestore.getInstance().collection(GAMESJR_COLLECTION)
             .whereEqualTo("userId", Firebase.auth.currentUser?.uid)
             .dataObjects()
 
     override suspend fun getGame(gameId: String) : Game? =
-        FirebaseFirestore.getInstance().collection(GAME_COLLECTION).document(gameId).get().await().toObject<Game>()
+        FirebaseFirestore.getInstance().collection(GAMESJR_COLLECTION).document(gameId).get().await().toObject<Game>()
 
     override suspend fun createGame(game: Game) {
-        FirebaseFirestore.getInstance().collection(GAME_COLLECTION)
+        FirebaseFirestore.getInstance().collection(GAMESJR_COLLECTION)
             .add(game)
             .addOnSuccessListener { documentReference ->
                 Log.d(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
@@ -40,7 +40,7 @@ class StorageService : IStorageService  {
     }
 
     override suspend fun deleteGame(gameId: String) {
-        FirebaseFirestore.getInstance().collection(GAME_COLLECTION)
+        FirebaseFirestore.getInstance().collection(GAMESJR_COLLECTION)
             .document(gameId)
             .delete()
             .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot with ID $gameId successfully deleted!") }
@@ -49,6 +49,7 @@ class StorageService : IStorageService  {
 
     companion object {
         private const val GAME_COLLECTION = "games"
+        private const val GAMESJR_COLLECTION = "gamesJr"
         private const val TAG = "StorageService"
     }
 }
