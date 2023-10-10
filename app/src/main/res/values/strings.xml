@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">Material3Testing</string>
+    <string name="app_name">Scorekeeper</string>
     <string name="web_client_id">595229474031-oei82iccu8gd8khntvfcrf1lk7pl0r5p.apps.googleusercontent.com</string>
     <string name="title_activity_sign_in">SignInActivity</string>
     <string name="title_activity_game_creation">GameCreationActivity</string>
+    <string name="title_activity_game">GameActivity</string>
 </resources>

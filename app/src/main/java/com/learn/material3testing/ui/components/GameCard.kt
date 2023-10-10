@@ -1,5 +1,6 @@
 package com.learn.material3testing.ui.components
 
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -48,6 +49,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.firebase.Timestamp
+import com.learn.material3testing.GameActivity
 import com.learn.material3testing.R
 import com.learn.material3testing.ui.components.business.GameService
 import com.learn.material3testing.ui.components.data.Game
@@ -82,9 +84,9 @@ fun GameCard(currentGame: Game, snackbarHost: SnackbarHostState){
             .size(width = 280.dp, height = 80.dp)
             .combinedClickable(
                 onClick = {
-                    Toast
-                        .makeText(context, currentGame.name, Toast.LENGTH_SHORT)
-                        .show()
+                    val openGameIntent = Intent(context, GameActivity::class.java)
+                    openGameIntent.putExtra("gameId", currentGame.gameId)
+                    context.startActivity(openGameIntent)
                 },
                 onLongClick = {
                     haptics.performHapticFeedback(HapticFeedbackType.LongPress)

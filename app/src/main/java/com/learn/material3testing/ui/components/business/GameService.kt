@@ -18,6 +18,9 @@ class GameService{
         }
     }
 
+   suspend fun getGameById(gameId: String) : Game? = StorageService().getGame(gameId)
+
+
     fun deleteGame(gameId: String){
         val coroutineScope = MainScope()
 
