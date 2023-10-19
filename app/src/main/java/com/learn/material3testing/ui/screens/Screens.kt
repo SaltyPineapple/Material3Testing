@@ -98,7 +98,6 @@ fun GameCreationDialog(
     var gameName by remember { mutableStateOf("") }
     var numberPlayers by remember { mutableStateOf("") }
     val isAddingPlayers = remember { mutableStateOf(false) }
-    var game = remember { mutableStateOf(Game()) }
     Dialog(onDismissRequest = onDismissRequest) {
         Card (
             modifier = Modifier
