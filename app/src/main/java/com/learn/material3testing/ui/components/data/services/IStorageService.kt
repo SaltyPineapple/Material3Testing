@@ -3,6 +3,7 @@ package com.learn.material3testing.ui.components.data.services
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.learn.material3testing.ui.components.data.Game
+import com.learn.material3testing.ui.components.data.Round
 import kotlinx.coroutines.flow.Flow
 
 interface IStorageService {
@@ -11,4 +12,6 @@ interface IStorageService {
     suspend fun createGame(game: Game)
     suspend fun updateGame(game: Game)
     suspend fun deleteGame(gameId: String)
+    suspend fun createRound(gameId: String, round: Round)
+    suspend fun getAllRounds(gameId: String) : List<Round>
 }

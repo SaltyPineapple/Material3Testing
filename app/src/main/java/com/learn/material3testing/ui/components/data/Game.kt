@@ -24,7 +24,8 @@ data class Game(
     var imageIconUrl: Int? = null,
     var userId: String? = null,
     var playerNames: List<String> = emptyList(),
-    @ServerTimestamp var dateCreated: Timestamp? = null
+    @ServerTimestamp var dateCreated: Timestamp? = null,
+    var rounds: List<Round> = emptyList(),
 )
 
 class GameViewModel(gameId: String) : ViewModel() {

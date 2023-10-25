@@ -49,6 +49,7 @@ import com.learn.material3testing.ui.components.business.GameService
 import com.learn.material3testing.ui.components.data.Game
 import com.learn.material3testing.ui.components.data.GameViewModel
 import com.learn.material3testing.ui.components.data.GameViewModelFactory
+import com.learn.material3testing.ui.components.data.Round
 import com.learn.material3testing.ui.theme.Material3TestingTheme
 
 class GameActivity : ComponentActivity() {
@@ -200,7 +201,11 @@ fun NewRoundDialog(
                         shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
                         onClick = {
-                            Toast.makeText(localContext, "Round Added!", Toast.LENGTH_SHORT).show()
+                            val playerScoresInt = mutableListOf<Int>()
+                            for (playerScore in playerScores) {
+                                playerScoresInt.add(playerScore.toInt())
+                            }
+                            game.gameId?.let { GameService().createRound(it, Round(scores = playerScoresInt)) }
                             onConfirmation()
                         }
                     ) {

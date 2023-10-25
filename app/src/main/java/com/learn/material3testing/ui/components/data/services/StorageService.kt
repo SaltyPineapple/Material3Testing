@@ -11,6 +11,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.learn.material3testing.ui.components.data.Game
+import com.learn.material3testing.ui.components.data.Round
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 
@@ -47,9 +48,36 @@ class StorageService : IStorageService  {
             .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
     }
 
+    override suspend fun createRound(gameId: String, round: Round) {
+        val allRounds = getAllRounds(gameId)
+
+        round.roundNumber = allRounds.size + 1
+        FirebaseFirestore.getInstance().collection(GAMESJR_COLLECTION).document(gameId).collection(
+            ROUNDS_COLLECTION)
+            .add(round)
+    }
+
+    override suspend fun getAllRounds(gameId: String): List<Round> {
+        val rounds = mutableListOf<Round>()
+        val roundsCollection = FirebaseFirestore.getInstance().collection(GAMESJR_COLLECTION).document(gameId).collection(
+           ROUNDS_COLLECTION)
+        roundsCollection.addSnapshotListener {
+            snapshot, e ->
+            if (e != null) {
+                Log.w(TAG, "Listen Failed", e)
+                return@addSnapshotListener
+            }
+            snapshot?.documents?.forEach {
+                it.toObject<Round>()?.let { round -> rounds.add(round) }
+            }
+        }
+        return rounds
+    }
+
     companion object {
         private const val GAME_COLLECTION = "games"
         private const val GAMESJR_COLLECTION = "gamesJr"
+        private const val ROUNDS_COLLECTION = "rounds"
         private const val TAG = "StorageService"
     }
 }
