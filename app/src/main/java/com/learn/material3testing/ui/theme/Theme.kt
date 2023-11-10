@@ -1,13 +1,11 @@
 package com.learn.material3testing.ui.theme
 
 import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
@@ -75,7 +73,7 @@ private val DarkColorScheme = darkColorScheme(
 
 @Composable
 fun Material3TestingTheme(
-  darkTheme: Boolean = isSystemInDarkTheme(),
+  darkTheme: Boolean = false, // isSystemInDarkTheme(),
   // Dynamic color is available on Android 12+
   content: @Composable() () -> Unit
 ) {
