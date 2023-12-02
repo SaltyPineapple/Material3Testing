@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 @Composable
 fun MaterialScaffold(
     modifier: Modifier = Modifier,
+    topBar: @Composable (() -> Unit) = {},
     bottomBar: @Composable (() -> Unit) = {},
     floatingActionButton: @Composable (() -> Unit) = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
@@ -22,6 +23,7 @@ fun MaterialScaffold(
 ) {
     Scaffold(
         modifier = modifier,
+        topBar = topBar,
         bottomBar = bottomBar,
         floatingActionButton = floatingActionButton,
         floatingActionButtonPosition = floatingActionButtonPosition,
