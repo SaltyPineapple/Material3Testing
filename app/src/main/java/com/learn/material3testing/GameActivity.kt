@@ -1,7 +1,6 @@
 package com.learn.material3testing
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -15,19 +14,24 @@ import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -41,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.learn.material3testing.ui.components.MaterialScaffold
 import com.learn.material3testing.ui.components.business.GameService
 import com.learn.material3testing.ui.components.data.Game
 import com.learn.material3testing.ui.components.data.GameViewModel
@@ -49,31 +54,58 @@ import com.learn.material3testing.ui.components.data.Round
 import com.learn.material3testing.ui.theme.Material3TestingTheme
 
 class GameActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val gameId = intent.getStringExtra("gameId")
+        val gameTitle = intent.getStringExtra("gameTitle");
 
         setContent {
             val openNewRoundDialog = remember { mutableStateOf(false) }
             Material3TestingTheme {
-                Scaffold(
+                MaterialScaffold(
+                    topBar = {
+                        CenterAlignedTopAppBar(
+                            title = {
+                                gameTitle?.let { Text(it) }
+                            },
+                            actions = {
+                                IconButton(onClick = { /*TODO*/ }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Menu,
+                                        contentDescription = "Menu Dropdown"
+                                    )
+                                }
+                            },
+                            navigationIcon = {
+                                IconButton(onClick = { /* TODO */ }) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                        contentDescription = "Localized description"
+                                    )
+                                }
+                            },
+                            colors = TopAppBarDefaults.topAppBarColors(
+                                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            ),
+                        )
+                    },
                     floatingActionButton = {
                         ExtendedFloatingActionButton(
                             onClick = {
                                 openNewRoundDialog.value = true
-                                // run new round method
-                                Toast.makeText(this, "Add Round!", Toast.LENGTH_SHORT).show()
                             },
                             icon = { Icon(Icons.Filled.Edit, "Extended floating action button.") },
                             text = { Text(text = "Add Round") },
-                            containerColor = MaterialTheme.colorScheme.tertiary,
-                            contentColor = MaterialTheme.colorScheme.onTertiary,
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                             modifier = Modifier.padding(end = 16.dp, bottom = 72.dp),
                         )
                     },
                     floatingActionButtonPosition = FabPosition.End,
-                ) { paddingValues ->
+                ) {
                     val gameViewModel: GameViewModel = viewModel(factory = gameId?.let {
                         GameViewModelFactory(
                             it
@@ -81,14 +113,16 @@ class GameActivity : ComponentActivity() {
                     })
                     val gameUiState = gameViewModel.uiState.collectAsState()
                     val game = gameUiState.value
-                    GameScreen(game = game, modifier = Modifier.padding(paddingValues))
-                    when {
-                        openNewRoundDialog.value -> {
-                            NewRoundDialog(
-                                onDismissRequest = { openNewRoundDialog.value = false },
-                                onConfirmation = { openNewRoundDialog.value = false },
-                                game = game
-                            )
+                    Surface( modifier = Modifier.padding(top = it.calculateTopPadding())) {
+                        GameScreen(game = game)
+                        when {
+                            openNewRoundDialog.value -> {
+                                NewRoundDialog(
+                                    onDismissRequest = { openNewRoundDialog.value = false },
+                                    onConfirmation = { openNewRoundDialog.value = false },
+                                    game = game
+                                )
+                            }
                         }
                     }
                 }
@@ -98,7 +132,7 @@ class GameActivity : ComponentActivity() {
 }
 
 @Composable
-fun GameScreen(game: Game, modifier: Modifier){
+fun GameScreen(game: Game){
     Material3TestingTheme {
         // A surface container using the 'background' color from the theme
         Surface(
@@ -109,13 +143,8 @@ fun GameScreen(game: Game, modifier: Modifier){
             Column(
                 modifier = Modifier
                     .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = game.name.toString(), modifier = Modifier.padding(16.dp), fontSize = 20.sp)
-                HorizontalDivider(
-                    thickness = 1.dp,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.padding(4.dp)
-                )
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 LazyHorizontalGrid(rows = GridCells.Fixed(1)){
                     game.players?.let {
                         items(it){ playerIndex ->

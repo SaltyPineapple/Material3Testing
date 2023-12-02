@@ -1,7 +1,5 @@
 package com.learn.material3testing
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -12,7 +10,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,10 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.learn.material3testing.ui.components.HomeScreen
-import com.learn.material3testing.ui.components.MaterialNavBar
 import com.learn.material3testing.ui.components.MaterialScaffold
 import com.learn.material3testing.ui.components.ProfileScreen
 import com.learn.material3testing.ui.components.SearchScreen
@@ -49,8 +43,9 @@ fun Material3TestingApp() {
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,),
-                )
+                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                ),
+            )
         }
     ) {
         Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {

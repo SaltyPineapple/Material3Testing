@@ -82,6 +82,7 @@ fun GameCard(currentGame: Game, snackbarHost: SnackbarHostState){
                 onClick = {
                     val openGameIntent = Intent(context, GameActivity::class.java)
                     openGameIntent.putExtra("gameId", currentGame.gameId)
+                    openGameIntent.putExtra("gameTitle", currentGame.name)
                     context.startActivity(openGameIntent)
                 },
                 onLongClick = {
