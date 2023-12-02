@@ -1,7 +1,5 @@
 package com.learn.material3testing.ui.components.data.services
 
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.QuerySnapshot
 import com.learn.material3testing.ui.components.data.Game
 import com.learn.material3testing.ui.components.data.Round
 import kotlinx.coroutines.flow.Flow

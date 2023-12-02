@@ -8,19 +8,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.State
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
-import androidx.navigation.Navigation
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.learn.material3testing.ui.screens.Home
 import com.learn.material3testing.ui.screens.Profile
 import com.learn.material3testing.ui.screens.Search
@@ -56,13 +51,10 @@ object ProfileScreen: MaterialDestination {
 val NavBarItems = listOf(HomeScreen, SearchScreen, ProfileScreen)
 
 @Composable
-fun MaterialNavBar() {
-    val navController = rememberNavController()
-    val backStackEntry = navController.currentBackStackEntryAsState()
-
+fun MaterialNavBar(navController: NavHostController, backStackEntry: State<NavBackStackEntry?>) {
     NavigationBar(containerColor = MaterialTheme.colorScheme.primaryContainer) {
         NavBarItems.forEach { item ->
-            var selected = item.route == backStackEntry.value?.destination?.route
+            val selected = item.route == backStackEntry.value?.destination?.route
             NavigationBarItem(
                 selected = selected,
                 onClick = { navController.navigate(item.route) },
@@ -76,11 +68,11 @@ fun MaterialNavBar() {
                     Icon(imageVector = item.icon, contentDescription = "${item.text} Icon")
                 },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                    indicatorColor = MaterialTheme.colorScheme.secondaryContainer,
+                    selectedIconColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                    selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     unselectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    selectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                    unselectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                    indicatorColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    unselectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
             )
         }

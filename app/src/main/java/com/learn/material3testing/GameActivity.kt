@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -42,9 +41,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.firebase.Timestamp
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.learn.material3testing.ui.components.business.GameService
 import com.learn.material3testing.ui.components.data.Game
 import com.learn.material3testing.ui.components.data.GameViewModel
@@ -106,10 +102,14 @@ fun GameScreen(game: Game, modifier: Modifier){
     Material3TestingTheme {
         // A surface container using the 'background' color from the theme
         Surface(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(text = game.name.toString(), modifier = Modifier.padding(16.dp), fontSize = 20.sp)
                 HorizontalDivider(
                     thickness = 1.dp,
@@ -118,15 +118,16 @@ fun GameScreen(game: Game, modifier: Modifier){
                 )
                 LazyHorizontalGrid(rows = GridCells.Fixed(1)){
                     game.players?.let {
-                        items(it){ index ->
-                            Text(text = game.playerNames[index], modifier = Modifier.padding(4.dp))
+                        items(it){ playerIndex ->
+                            Text(text = game.playerNames[playerIndex], modifier = Modifier.padding(4.dp))
                             HorizontalDivider(
                                 thickness = 0.5.dp,
                                 color = MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier.padding(4.dp)
                             )
-                            // Create a lazy vertical grid and place each players score here
-                            // will need a 'get round' route to grab the rounds from the db
+                        }
+                        items(it){ roundIndex ->
+                            Text(text = game.rounds[roundIndex].scores[it-1].toString(), modifier = Modifier.padding(4.dp))
                         }
                     }
                 }

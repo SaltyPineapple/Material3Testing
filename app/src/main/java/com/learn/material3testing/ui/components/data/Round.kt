@@ -7,4 +7,5 @@ data class Round(
     @DocumentId var id: String? = null,
     var roundNumber: Int? = null,
     val scores: List<Int> = emptyList(),
+    val userId: String? = null,
 )

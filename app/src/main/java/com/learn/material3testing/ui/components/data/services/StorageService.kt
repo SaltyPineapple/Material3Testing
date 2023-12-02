@@ -1,13 +1,9 @@
 package com.learn.material3testing.ui.components.data.services
 
 import android.util.Log
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.dataObjects
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.learn.material3testing.ui.components.data.Game
@@ -22,8 +18,11 @@ class StorageService : IStorageService  {
             .whereEqualTo("userId", Firebase.auth.currentUser?.uid)
             .dataObjects()
 
-    override suspend fun getGame(gameId: String) : Game? =
-        FirebaseFirestore.getInstance().collection(GAMESJR_COLLECTION).document(gameId).get().await().toObject<Game>()
+    override suspend fun getGame(gameId: String) : Game? {
+        val game = FirebaseFirestore.getInstance().collection(GAMESJR_COLLECTION).document(gameId).get().await().toObject<Game>()
+        game?.rounds = getAllRounds(gameId)
+        return game
+    }
 
     override suspend fun createGame(game: Game) {
         FirebaseFirestore.getInstance().collection(GAMESJR_COLLECTION)
@@ -48,6 +47,9 @@ class StorageService : IStorageService  {
             .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
     }
 
+    /*
+    Quick note: if we are able to add the rounds to the game view model from the onset, we won't need special routes for accessing
+     */
     override suspend fun createRound(gameId: String, round: Round) {
         val allRounds = getAllRounds(gameId)
 
@@ -59,18 +61,13 @@ class StorageService : IStorageService  {
 
     override suspend fun getAllRounds(gameId: String): List<Round> {
         val rounds = mutableListOf<Round>()
-        val roundsCollection = FirebaseFirestore.getInstance().collection(GAMESJR_COLLECTION).document(gameId).collection(
-           ROUNDS_COLLECTION)
-        roundsCollection.addSnapshotListener {
-            snapshot, e ->
-            if (e != null) {
-                Log.w(TAG, "Listen Failed", e)
-                return@addSnapshotListener
-            }
-            snapshot?.documents?.forEach {
-                it.toObject<Round>()?.let { round -> rounds.add(round) }
-            }
+        val gameRef = FirebaseFirestore.getInstance().collection(GAMESJR_COLLECTION).document(gameId)
+        val roundsCollection = gameRef.collection(ROUNDS_COLLECTION).get().await()
+
+        roundsCollection?.documents?.forEach {
+            it.toObject<Round>()?.let { round -> rounds.add(round) }
         }
+
         return rounds
     }
 
