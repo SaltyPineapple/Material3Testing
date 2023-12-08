@@ -35,12 +35,8 @@ fun SignInForm(
     if(user != null){
         user.let {
             val name = it.displayName
-            val email = it.email
-            val uid = it.uid
             Column {
-                Text(text = "Hello, $name", modifier = modifier)
-                Text(text = "Email: $email", modifier = modifier)
-                Text(text = "uid: $uid", modifier = modifier)
+                Text(text = "Welcome, $name!", modifier = modifier)
                 Button(onClick = { Firebase.auth.signOut() }) {
                     Text(text = "Sign out of Google")
                 }

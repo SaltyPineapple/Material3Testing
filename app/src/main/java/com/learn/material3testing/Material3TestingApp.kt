@@ -55,6 +55,11 @@ fun Material3TestingApp() {
 }
 
 @Composable
+fun AccountModalPopUp(){
+
+}
+
+@Composable
 private fun NavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController,

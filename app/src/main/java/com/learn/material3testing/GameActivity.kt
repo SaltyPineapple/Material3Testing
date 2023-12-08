@@ -3,14 +3,17 @@ package com.learn.material3testing
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -41,11 +44,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.learn.material3testing.ui.components.MaterialScaffold
+import com.learn.material3testing.ui.components.RoundCard
 import com.learn.material3testing.ui.components.business.GameService
 import com.learn.material3testing.ui.components.data.Game
 import com.learn.material3testing.ui.components.data.GameViewModel
@@ -79,7 +84,7 @@ class GameActivity : ComponentActivity() {
                                 }
                             },
                             navigationIcon = {
-                                IconButton(onClick = { /* TODO */ }) {
+                                IconButton(onClick = { this.finish() }) {
                                     Icon(
                                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                         contentDescription = "Localized description"
@@ -120,7 +125,7 @@ class GameActivity : ComponentActivity() {
                                 NewRoundDialog(
                                     onDismissRequest = { openNewRoundDialog.value = false },
                                     onConfirmation = { openNewRoundDialog.value = false },
-                                    game = game
+                                    gameViewModel = gameViewModel
                                 )
                             }
                         }
@@ -131,33 +136,32 @@ class GameActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun GameScreen(game: Game){
     Material3TestingTheme {
         // A surface container using the 'background' color from the theme
-        Surface(
-            modifier = Modifier
-                .fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            Column(
+
+        if (game.gameId == null){
+           Surface(modifier = Modifier
+               .fillMaxSize(),
+               color = MaterialTheme.colorScheme.background
+           ) {
+               Image(painter = painterResource(R.drawable.app_logo), contentDescription = "Loading")
+           }
+        }
+        else {
+            Surface(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
             ) {
-                LazyHorizontalGrid(rows = GridCells.Fixed(1)){
-                    game.players?.let {
-                        items(it){ playerIndex ->
-                            Text(text = game.playerNames[playerIndex], modifier = Modifier.padding(4.dp))
-                            HorizontalDivider(
-                                thickness = 0.5.dp,
-                                color = MaterialTheme.colorScheme.onSurface,
-                                modifier = Modifier.padding(4.dp)
-                            )
-                        }
-                        items(it){ roundIndex ->
-                            Text(text = game.rounds[roundIndex].scores[it-1].toString(), modifier = Modifier.padding(4.dp))
-                        }
+                LazyColumn(){
+                    stickyHeader{
+                        RoundCard(round = game.playerNames, isOdd = true, isHeader = true)
+                    }
+                    items(game.rounds.size){
+                        RoundCard(round = game.rounds[it].scores, isOdd = it % 2 == 0)
                     }
                 }
             }
@@ -169,8 +173,11 @@ fun GameScreen(game: Game){
 fun NewRoundDialog(
     onDismissRequest: () -> Unit,
     onConfirmation: () -> Unit,
-    game: Game,
+    gameViewModel: GameViewModel,
 ){
+    val gameUiState = gameViewModel.uiState.collectAsState()
+    val game = gameUiState.value
+
     val localContext = LocalContext.current
     val playerList = game.playerNames
     val playerScores = remember { mutableListOf<String>() }
@@ -235,7 +242,10 @@ fun NewRoundDialog(
                             for (playerScore in playerScores) {
                                 playerScoresInt.add(playerScore.toInt())
                             }
-                            game.gameId?.let { GameService().createRound(it, Round(scores = playerScoresInt)) }
+                            game.gameId?.let {
+                                GameService().createRound(it, Round(scores = playerScoresInt))
+                                gameViewModel.createNewRound(round = Round(scores = playerScoresInt))
+                            }
                             onConfirmation()
                         }
                     ) {

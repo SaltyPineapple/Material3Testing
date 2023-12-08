@@ -13,6 +13,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -40,6 +41,14 @@ class GameViewModel(gameId: String) : ViewModel() {
     private fun getGameById(gameId: String){
         coroutineScope.launch {
             _uiState.value = GameService().getGameById(gameId)!!
+        }
+    }
+
+    fun createNewRound(round: Round){
+        _uiState.update { currentState ->
+            val rounds = _uiState.value.rounds.toMutableList()
+            rounds.add(round)
+            currentState.copy(rounds = rounds)
         }
     }
 }
