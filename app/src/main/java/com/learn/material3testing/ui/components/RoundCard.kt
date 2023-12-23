@@ -49,11 +49,6 @@ fun <T> RoundCard(round: List<T>, isOdd: Boolean, isHeader: Boolean = false){
     }
 }
 
-@Composable
-fun RoundCardHeader(headers: List<String>){
-
-}
-
 @Preview
 @Composable
 fun RoundCardPreview(){

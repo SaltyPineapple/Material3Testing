@@ -140,8 +140,6 @@ class GameActivity : ComponentActivity() {
 @Composable
 fun GameScreen(game: Game){
     Material3TestingTheme {
-        // A surface container using the 'background' color from the theme
-
         if (game.gameId == null){
            Surface(modifier = Modifier
                .fillMaxSize(),
@@ -240,7 +238,7 @@ fun NewRoundDialog(
                         onClick = {
                             val playerScoresInt = mutableListOf<Int>()
                             for (playerScore in playerScores) {
-                                playerScoresInt.add(playerScore.toInt())
+                                playerScore.toIntOrNull()?.let { playerScoresInt.add(it) }
                             }
                             game.gameId?.let {
                                 GameService().createRound(it, Round(scores = playerScoresInt))

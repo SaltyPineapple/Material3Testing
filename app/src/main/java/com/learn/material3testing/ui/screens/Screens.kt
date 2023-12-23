@@ -95,6 +95,7 @@ fun GameCreationDialog(
     var gameName by remember { mutableStateOf("") }
     var numberPlayers by remember { mutableStateOf("") }
     val isAddingPlayers = remember { mutableStateOf(false) }
+    val isPlayersValidNum = remember { mutableStateOf(false) }
     Dialog(onDismissRequest = onDismissRequest) {
         Card (
             modifier = Modifier
@@ -123,9 +124,13 @@ fun GameCreationDialog(
                     )
                    OutlinedTextField(
                         value = numberPlayers,
-                        onValueChange = { numberPlayers = it },
+                        onValueChange = {
+                            numberPlayers = it
+                            val playersAsNum = numberPlayers.toIntOrNull()
+                            isPlayersValidNum.value = playersAsNum != null
+                        },
                         label = { Text("Number of Players") },
-                        placeholder = { Text(text = "15") }
+                        placeholder = { Text(text = "6") }
                    )
                    Row {
                         Button(
@@ -142,12 +147,10 @@ fun GameCreationDialog(
                        Button(
                            modifier = Modifier.padding(8.dp),
                            shape = RoundedCornerShape(12.dp),
+                           enabled = isPlayersValidNum.value && gameName != "",
                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
                            onClick = {
-                               val playersAsNum = numberPlayers.toIntOrNull()
-                               if (playersAsNum != null) {
-                                   isAddingPlayers.value = true
-                               }
+                               isAddingPlayers.value = true
                            }
                        ) {
                            Text(

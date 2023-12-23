@@ -3,6 +3,7 @@ package com.learn.material3testing.ui.components.data.services
 import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.dataObjects
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -15,7 +16,7 @@ class StorageService : IStorageService  {
 
     override val games: Flow<List<Game>>
         get() = FirebaseFirestore.getInstance().collection(GAMESJR_COLLECTION)
-            .whereEqualTo("userId", Firebase.auth.currentUser?.uid)
+            .whereEqualTo("userId", Firebase.auth.currentUser?.uid).orderBy("dateCreated", Query.Direction.ASCENDING)
             .dataObjects()
 
     override suspend fun getGame(gameId: String) : Game? {
@@ -62,7 +63,7 @@ class StorageService : IStorageService  {
     override suspend fun getAllRounds(gameId: String): List<Round> {
         val rounds = mutableListOf<Round>()
         val gameRef = FirebaseFirestore.getInstance().collection(GAMESJR_COLLECTION).document(gameId)
-        val roundsCollection = gameRef.collection(ROUNDS_COLLECTION).get().await()
+        val roundsCollection = gameRef.collection(ROUNDS_COLLECTION).orderBy("roundNumber", Query.Direction.ASCENDING).get().await()
 
         roundsCollection?.documents?.forEach {
             it.toObject<Round>()?.let { round -> rounds.add(round) }
