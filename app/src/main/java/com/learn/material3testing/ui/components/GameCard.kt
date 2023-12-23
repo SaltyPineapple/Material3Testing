@@ -35,6 +35,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
@@ -115,7 +117,15 @@ fun GameCard(currentGame: Game, snackbarHost: SnackbarHostState){
             defaultElevation = 10.dp
         ),
     ) {
-        Row(modifier = Modifier.background(color = MaterialTheme.colorScheme.primary)) {
+        Row(modifier = Modifier
+            .background(Brush.horizontalGradient(
+                    listOf(
+                        MaterialTheme.colorScheme.primary,
+                        MaterialTheme.colorScheme.primary,
+                        Color(red = 218, blue = 224, green = 220),
+                        Color(red = 218, blue = 224, green = 220))
+                ))
+        ) {
             Column(modifier = Modifier
                 .padding(16.dp)
                 .weight(1f)) {
@@ -123,13 +133,6 @@ fun GameCard(currentGame: Game, snackbarHost: SnackbarHostState){
                     text = currentGame.name.toString(),
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onPrimary)
-                Text(
-                    text = "Players: " + currentGame.players.toString(),
-                    color = MaterialTheme.colorScheme.onPrimary)
-            }
-            Column(modifier = Modifier
-                .padding(16.dp)
-                .weight(1f)) {
                 Text(
                     text = convertToDate(currentGame.dateCreated).toString(),
                     color = MaterialTheme.colorScheme.onPrimary)
